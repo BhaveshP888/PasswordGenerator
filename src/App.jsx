@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 
 export default function App() {
   const [length, setLength] = useState(10);
@@ -22,6 +22,12 @@ export default function App() {
     }
     return password;
   }, [length, numAllowed, charAllowed]);
+  const passRef = useRef(null);
+
+  const copyPass = () => {
+    passRef.current.select();
+    window.navigator.clipboard.writeText(passRef.current.value);
+  };
 
   return (
     <>
@@ -39,8 +45,12 @@ export default function App() {
               placeholder="Password"
               className="p-2 rounded-lg rounded-e-none outline-none w-[60vw]"
               value={passwordGen()}
+              ref={passRef}
             />
-            <button className="bg-yellow-300 p-2 rounded-lg rounded-s-none hover:cursor-pointer">
+            <button
+              onClick={copyPass}
+              className="bg-yellow-300 p-2 rounded-lg rounded-s-none hover:cursor-pointer hover:opacity-90"
+            >
               Copy
             </button>
           </div>
